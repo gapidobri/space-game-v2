@@ -1,10 +1,8 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:engine/component_visitor.dart';
-import 'package:engine/components/rectangle_component.dart';
-import 'package:engine/components/sprite_component.dart';
-import 'package:engine/components/transform_component.dart';
+import 'package:engine/src/component_visitor.dart';
+import 'package:engine/src/components/components.dart';
 import 'package:vector_math/vector_math.dart';
 
 final whitePaint = Paint()..color = Color(0xFFFFFFFF);
@@ -43,6 +41,7 @@ class RenderVisitor extends ComponentVisitor<Matrix4> {
     if (component.sprite != null) {
       final sprite = component.sprite!;
 
+      // TODO: use anchor for position
       canvas.save();
       if (rotation != 0) {
         canvas.translate(
@@ -59,7 +58,12 @@ class RenderVisitor extends ComponentVisitor<Matrix4> {
         canvas.drawImageRect(
           sprite.image,
           sprite.src!,
-          Rect.fromLTWH(0, 0, sprite.src!.width, sprite.src!.height),
+          Rect.fromLTWH(
+            translation.x,
+            translation.y,
+            sprite.src!.width,
+            sprite.src!.height,
+          ),
           whitePaint,
         );
       } else {

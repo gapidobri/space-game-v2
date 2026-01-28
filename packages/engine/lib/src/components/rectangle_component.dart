@@ -1,7 +1,7 @@
 import 'dart:ui';
 
-import 'package:engine/component_visitor.dart';
-import 'package:engine/components/transform_component.dart';
+import 'package:engine/src/component_visitor.dart';
+import 'package:engine/src/components/transform_component.dart';
 
 class RectangleComponent extends TransformComponent {
   RectangleComponent({

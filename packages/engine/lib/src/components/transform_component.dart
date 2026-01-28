@@ -1,5 +1,5 @@
-import 'package:engine/component.dart';
-import 'package:engine/component_visitor.dart';
+import 'package:engine/src/component.dart';
+import 'package:engine/src/component_visitor.dart';
 import 'package:vector_math/vector_math.dart';
 
 class TransformComponent extends Component {

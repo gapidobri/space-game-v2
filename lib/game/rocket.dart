@@ -1,7 +1,5 @@
-import 'dart:ui';
-
 import 'package:engine/engine.dart';
-import 'package:engine/sprite.dart';
+import 'package:flutter/services.dart';
 
 class Rocket extends SpriteComponent {
   @override
@@ -15,6 +13,8 @@ class Rocket extends SpriteComponent {
 
   @override
   void update(double dt) {
-    rotation -= dt;
+    if (Game.game.pressedKeys.contains(PhysicalKeyboardKey.space)) {
+      position.x += 50 * dt;
+    }
   }
 }

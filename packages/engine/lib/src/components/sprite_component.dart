@@ -1,6 +1,6 @@
-import 'package:engine/component_visitor.dart';
-import 'package:engine/components/transform_component.dart';
-import 'package:engine/sprite.dart';
+import 'package:engine/src/component_visitor.dart';
+import 'package:engine/src/components/transform_component.dart';
+import 'package:engine/src/sprite.dart';
 
 class SpriteComponent extends TransformComponent {
   Sprite? sprite;

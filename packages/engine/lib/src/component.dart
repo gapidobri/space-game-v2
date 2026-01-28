@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:engine/component_visitor.dart';
+import 'package:engine/src/component_visitor.dart';
 
 class Component {
   final List<Component> _children = [];

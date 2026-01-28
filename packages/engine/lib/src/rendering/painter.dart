@@ -1,4 +1,4 @@
-import 'package:engine/game.dart';
+import 'package:engine/src/game.dart';
 import 'package:flutter/material.dart';
 
 class GamePainter extends CustomPainter {

@@ -1,16 +1,22 @@
 import 'dart:async';
 
-import 'package:engine/camera.dart';
-import 'package:engine/component.dart';
-import 'package:engine/renderer/render_visitor.dart';
-import 'package:engine/world.dart';
+import 'package:engine/src/camera.dart';
+import 'package:engine/src/component.dart';
+import 'package:engine/src/rendering/render_visitor.dart';
+import 'package:engine/src/world.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Game {
-  Game({required this.world, required this.camera});
+  Game({required this.world, required this.camera}) {
+    Game.game = this;
+  }
+
+  static late Game game;
 
   final World world;
   final Camera camera;
+  final Set<PhysicalKeyboardKey> pressedKeys = {};
 
   final _renderVisitor = RenderVisitor();
 
@@ -36,8 +42,6 @@ class Game {
 
   void update(double dt) {
     if (paused) return;
-
-    camera.position.x -= 50 * dt;
 
     void recurse(Component parent) {
       parent.update(dt);

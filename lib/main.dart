@@ -1,5 +1,4 @@
-import 'package:engine/game.dart';
-import 'package:engine/game_widget.dart';
+import 'package:engine/engine.dart';
 import 'package:flutter/material.dart';
 import 'package:space_game/game/game.dart';
 

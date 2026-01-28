@@ -1,5 +1,5 @@
-import 'package:engine/component.dart';
-import 'package:engine/components/components.dart';
+import 'package:engine/src/component.dart';
+import 'package:engine/src/components/components.dart';
 
 class ComponentVisitor<T> {
   void visitComponent(Component component, T arg) {

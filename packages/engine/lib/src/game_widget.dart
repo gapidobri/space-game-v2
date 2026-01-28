@@ -1,7 +1,8 @@
-import 'package:engine/game.dart';
-import 'package:engine/painter.dart';
+import 'package:engine/src/game.dart';
+import 'package:engine/src/rendering/painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 
 class GameWidget extends StatefulWidget {
   const GameWidget({super.key, required this.game});
@@ -23,6 +24,8 @@ class _GameWidgetState extends State<GameWidget>
   void initState() {
     super.initState();
 
+    HardwareKeyboard.instance.addHandler(onKeyboardEvent);
+
     renderer = GamePainter(widget.game);
 
     ticker = createTicker(onTick);
@@ -32,7 +35,22 @@ class _GameWidgetState extends State<GameWidget>
   @override
   void dispose() {
     ticker.dispose();
+
+    HardwareKeyboard.instance.removeHandler(onKeyboardEvent);
+
     super.dispose();
+  }
+
+  bool onKeyboardEvent(KeyEvent event) {
+    switch (event) {
+      case KeyDownEvent e:
+        widget.game.pressedKeys.add(e.physicalKey);
+        break;
+      case KeyUpEvent e:
+        widget.game.pressedKeys.remove(e.physicalKey);
+        break;
+    }
+    return true;
   }
 
   void onTick(Duration elapsed) {
