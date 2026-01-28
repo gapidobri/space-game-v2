@@ -1,0 +1,22 @@
+import 'package:engine/game.dart';
+import 'package:engine/game_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:space_game/game/game.dart';
+
+void main() {
+  final game = SpaceGame();
+  game.setup();
+
+  runApp(App(game: game));
+}
+
+class App extends StatelessWidget {
+  const App({super.key, required this.game});
+
+  final Game game;
+
+  @override
+  Widget build(BuildContext context) {
+    return GameWidget(game: game);
+  }
+}
