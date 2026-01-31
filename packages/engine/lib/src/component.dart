@@ -6,6 +6,12 @@ import 'package:engine/src/component_visitor.dart';
 enum ComponentState { uninitialized, initializing, ready }
 
 class Component {
+  Component({Iterable<Component>? children}) {
+    if (children != null) {
+      addAll(children);
+    }
+  }
+
   final List<Component> _children = [];
   Component? _parent;
 

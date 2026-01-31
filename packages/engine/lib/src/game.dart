@@ -10,7 +10,7 @@ class Game extends Component {
   Game({Camera? camera})
     : camera = camera ?? Camera(resolution: Vector2(800, 450));
 
-  Camera camera;
+  final Camera camera;
 
   final Set<PhysicalKeyboardKey> pressedKeys = {};
 
@@ -18,10 +18,15 @@ class Game extends Component {
 
   final _renderVisitor = RenderVisitor();
 
+  Vector2 _size = Vector2.zero();
+
+  Vector2 get size => _size;
+
   @override
   @mustCallSuper
   void setup() async {
     _renderVisitor.camera = camera;
+    add(camera);
   }
 
   @override
@@ -68,9 +73,25 @@ class Game extends Component {
   }
 
   void render(Canvas canvas, Size size) {
+    _size = Vector2(size.width, size.height);
+
+    _renderVisitor.resetRenderCount();
+    _renderVisitor.resetObjectCount();
     _renderVisitor.canvas = canvas;
     _renderVisitor.size = size;
+
     accept(_renderVisitor, null);
+
+    TextPainter(
+        text: TextSpan(
+          text:
+              'rendered objects: ${_renderVisitor.getRenderCount()}/${_renderVisitor.getObjectCount()}',
+          style: TextStyle(fontSize: 10.0),
+        ),
+        textDirection: TextDirection.ltr,
+      )
+      ..layout()
+      ..paint(canvas, Offset(10, 10));
   }
 
   @override

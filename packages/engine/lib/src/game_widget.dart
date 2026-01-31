@@ -66,6 +66,8 @@ class _GameWidgetState extends State<GameWidget>
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(painter: painter);
+    return Focus(
+      child: CustomPaint(painter: painter, size: Size.infinite),
+    );
   }
 }

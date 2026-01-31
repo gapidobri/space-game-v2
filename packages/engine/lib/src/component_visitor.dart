@@ -1,5 +1,6 @@
 import 'package:engine/src/component.dart';
 import 'package:engine/src/components/components.dart';
+import 'package:engine/src/components/text_component.dart';
 
 class ComponentVisitor<T> {
   void visitComponent(Component component, T arg) {
@@ -15,5 +16,8 @@ class ComponentVisitor<T> {
       visitComponent(component, arg);
 
   void visitSpriteComponent(SpriteComponent component, T arg) =>
+      visitComponent(component, arg);
+
+  void visitTextComponent(TextComponent component, T arg) =>
       visitComponent(component, arg);
 }

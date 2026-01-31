@@ -1,7 +1,11 @@
+import 'package:vector_math/vector_math_64.dart';
+
 class Anchor {
+  const Anchor(this.x, this.y);
+
   final double x, y;
 
-  const Anchor(this.x, this.y);
+  Vector2 toVector2() => Vector2(x, y);
 
   static const topLeft = Anchor(0, 0);
   static const topCenter = Anchor(0.5, 0);

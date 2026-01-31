@@ -49,4 +49,8 @@ extension Matrix4Extension on Matrix4 {
 
 extension Vector2Extension on Vector2 {
   double getAngle() => atan2(y, x);
+
+  Vector3 toVector3(double z) => Vector3(x, y, z);
+
+  Vector2 operator %(Vector2 other) => Vector2(x % other.x, y % other.y);
 }

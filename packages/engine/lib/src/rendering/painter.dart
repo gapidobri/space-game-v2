@@ -24,7 +24,10 @@ class GamePainter extends CustomPainter {
 
     final newSize = Size(size.width / scale, size.height / scale);
 
-    canvas.translate(newSize.width / 2, newSize.height / 2);
+    canvas.drawRect(
+      Rect.fromLTWH(0, 0, newSize.width, newSize.height),
+      Paint(),
+    );
 
     _game.render(canvas, newSize);
   }

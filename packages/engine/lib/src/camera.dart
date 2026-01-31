@@ -1,11 +1,10 @@
+import 'package:engine/engine.dart';
 import 'package:vector_math/vector_math_64.dart';
 
-class Camera {
+class Camera extends TransformComponent {
   Camera({required this.resolution});
 
   final Vector2 resolution;
-
-  Vector2 position = Vector2.zero();
 
   Matrix4 get cameraMatrix {
     final m = Matrix4.identity();

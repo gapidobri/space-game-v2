@@ -14,6 +14,7 @@ class Rocket extends PhysicsBody with GameRef<SpaceGame> {
       super(mass: 1000);
 
   late final Emitter _emitter;
+  late final Sound _boosterSound;
 
   final double maxFuel;
   final double maxHealth;
@@ -34,8 +35,6 @@ class Rocket extends PhysicsBody with GameRef<SpaceGame> {
 
   @override
   Future<void> setup() async {
-    anchor = Anchor.center;
-
     add(
       SpriteComponent(
         sprite: await Sprite.load(
@@ -58,6 +57,12 @@ class Rocket extends PhysicsBody with GameRef<SpaceGame> {
       oneShot: false,
     );
     add(_emitter);
+
+    _boosterSound = await AudioEngine.load(
+      'assets/audio/rocket.wav',
+      loop: true,
+      volume: 0.5,
+    );
   }
 
   @override
@@ -72,10 +77,10 @@ class Rocket extends PhysicsBody with GameRef<SpaceGame> {
     // booster particles
     if (_thrustPower != 0) {
       _emitter.start();
-      // _boosterSoundHandle.play();
+      // _boosterSound.play();
     } else {
       _emitter.stop();
-      // _boosterSoundHandle.pause();
+      // _boosterSound.pause();
     }
 
     // rotation physics

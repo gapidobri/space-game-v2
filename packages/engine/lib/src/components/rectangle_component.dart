@@ -15,6 +15,7 @@ class RectangleComponent extends TransformComponent {
   }) : paint = paint ?? Paint(),
        size = size ?? Vector2.zero();
 
+  @override
   Vector2 size;
   Paint paint;
 

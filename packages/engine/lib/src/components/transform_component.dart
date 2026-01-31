@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:engine/src/anchor.dart';
 import 'package:engine/src/component.dart';
 import 'package:engine/src/component_visitor.dart';
@@ -12,6 +10,7 @@ class TransformComponent extends Component {
     double? angle,
     Vector2? scale,
     this.anchor = Anchor.topLeft,
+    super.children,
   }) : position = position ?? Vector2.zero(),
        _angle = angle ?? 0.0,
        scale = scale ?? Vector2.all(1.0);
@@ -21,20 +20,16 @@ class TransformComponent extends Component {
   Vector2 scale;
   Anchor anchor;
 
-  // Matrix4 worldTransform = Matrix4.identity();
-
   double get angle => _angle;
 
   set angle(double angle) => _angle = angle.normalisedAngle();
 
-  Matrix4 get localTransform {
-    final m = Matrix4.identity();
-    m.translateByVector3(Vector3(position.x, position.y, 0));
-    m.rotateZ(_angle);
-    m.scaleByVector3(Vector3(scale.x, scale.y, 1));
+  Vector2 get size => Vector2.zero();
 
-    return m;
-  }
+  Matrix4 get localTransform => Matrix4.identity()
+    ..translateByVector3(position.toVector3(0))
+    ..rotateZ(_angle)
+    ..scaleByVector3(Vector3(scale.x, scale.y, 1));
 
   Matrix4 get globalTransform {
     Matrix4 transform = localTransform;
@@ -53,10 +48,6 @@ class TransformComponent extends Component {
   double get absoluteAngle => globalTransform.getZRotation();
 
   Vector2 get absoluteScale => globalTransform.getScale().xy;
-
-  // void updateWorldTransform(Matrix4 parentWorldTransform) {
-  //   worldTransform = parentWorldTransform * localTransform;
-  // }
 
   @override
   void accept<T>(ComponentVisitor<T> visitor, T arg) =>

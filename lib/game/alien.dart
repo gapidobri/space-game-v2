@@ -19,18 +19,18 @@ class Alien extends PhysicsBody with GameRef<SpaceGame> {
       SpriteComponent(
         sprite: await Sprite.load(
           'assets/images/atlas.png',
-          src: Rect.fromLTWH(50, 50, 50, 50),
+          src: Rect.fromLTWH(50, 57, 29, 17),
         ),
         anchor: Anchor.center,
       ),
     );
 
-    dAcceleration = add(
-      RectangleComponent(size: Vector2(20, 1))..paint.color = Colors.white,
-    );
-    dVelocity = add(
-      RectangleComponent(size: Vector2(20, 1))..paint.color = Colors.green,
-    );
+    // dAcceleration = add(
+    //   RectangleComponent(size: Vector2(20, 1))..paint.color = Colors.white,
+    // );
+    // dVelocity = add(
+    //   RectangleComponent(size: Vector2(20, 1))..paint.color = Colors.green,
+    // );
   }
 
   @override
@@ -44,10 +44,10 @@ class Alien extends PhysicsBody with GameRef<SpaceGame> {
 
     acceleration = cancel * cancelW + follow * (1 - cancelW);
 
-    dAcceleration.size.x = acceleration.length;
-    dAcceleration.angle = acceleration.getAngle();
-
-    dVelocity.size.x = velocity.length;
-    dVelocity.angle = velocity.getAngle();
+    // dAcceleration.size.x = acceleration.length;
+    // dAcceleration.angle = acceleration.getAngle();
+    //
+    // dVelocity.size.x = velocity.length;
+    // dVelocity.angle = velocity.getAngle();
   }
 }
