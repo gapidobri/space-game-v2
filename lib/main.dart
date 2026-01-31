@@ -4,7 +4,6 @@ import 'package:space_game/game/game.dart';
 
 void main() {
   final game = SpaceGame();
-  game.setup();
 
   runApp(App(game: game));
 }

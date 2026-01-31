@@ -1,7 +1,11 @@
-import 'package:vector_math/vector_math.dart';
+import 'package:vector_math/vector_math_64.dart';
 
 class Camera {
-  final Vector2 position = Vector2.zero();
+  Camera({required this.resolution});
+
+  final Vector2 resolution;
+
+  Vector2 position = Vector2.zero();
 
   Matrix4 get cameraMatrix {
     final m = Matrix4.identity();

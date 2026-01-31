@@ -1,80 +1,79 @@
-import 'dart:math';
 import 'dart:ui';
 
+import 'package:engine/src/anchor.dart';
+import 'package:engine/src/camera.dart';
 import 'package:engine/src/component_visitor.dart';
 import 'package:engine/src/components/components.dart';
-import 'package:vector_math/vector_math.dart';
+import 'package:engine/src/utils.dart';
+import 'package:vector_math/vector_math_64.dart';
 
 final whitePaint = Paint()..color = Color(0xFFFFFFFF);
 
-class RenderVisitor extends ComponentVisitor<Matrix4> {
+class RenderVisitor extends ComponentVisitor<void> {
+  late Camera camera;
   late Canvas canvas;
   late Size size;
 
-  @override
-  void visitTransformComponent(TransformComponent component, Matrix4 arg) {
-    final worldTransform = arg.multiplied(component.localTransform);
-    for (final child in component.children) {
-      child.accept(this, worldTransform);
+  void _applyTransform(Matrix4 transform, {Vector2? size, Anchor? anchor}) {
+    final cameraSpaceTransform = camera.cameraMatrix.multiplied(transform);
+
+    final translation = cameraSpaceTransform.getTranslation();
+    canvas.translate(translation.x, translation.y);
+
+    final angle = cameraSpaceTransform.getZRotation();
+    canvas.rotate(angle);
+
+    final scale = cameraSpaceTransform.getScale();
+    canvas.scale(scale.x, scale.y);
+
+    if (size != null && anchor != null) {
+      canvas.translate(-size.x * anchor.x, -size.y * anchor.y);
     }
   }
 
   @override
-  void visitRectangleComponent(RectangleComponent component, Matrix4 arg) {
-    final worldTransform = arg.multiplied(component.localTransform);
-    final translation = worldTransform.getTranslation();
-
+  void visitRectangleComponent(RectangleComponent component, void arg) {
+    canvas.save();
+    _applyTransform(
+      component.globalTransform,
+      size: component.size,
+      anchor: component.anchor,
+    );
     canvas.drawRect(
-      Rect.fromLTWH(translation.x, translation.y, 100, 100),
+      Rect.fromLTWH(0, 0, component.size.x, component.size.y),
       component.paint,
     );
+    canvas.restore();
 
     super.visitRectangleComponent(component, arg);
   }
 
   @override
-  void visitSpriteComponent(SpriteComponent component, Matrix4 arg) {
-    final worldTransform = arg.multiplied(component.localTransform);
-    final translation = worldTransform.getTranslation();
-    final rotation = atan2(worldTransform.row1.x, worldTransform.row0.x);
-
-    if (component.sprite != null) {
-      final sprite = component.sprite!;
-
-      // TODO: use anchor for position
-      canvas.save();
-      if (rotation != 0) {
-        canvas.translate(
-          sprite.size.x * sprite.anchor.x,
-          sprite.size.y * sprite.anchor.y,
-        );
-        canvas.rotate(rotation);
-        canvas.translate(
-          -sprite.size.x * sprite.anchor.x,
-          -sprite.size.y * sprite.anchor.y,
-        );
-      }
-      if (component.sprite!.src != null) {
-        canvas.drawImageRect(
-          sprite.image,
-          sprite.src!,
-          Rect.fromLTWH(
-            translation.x,
-            translation.y,
-            sprite.src!.width,
-            sprite.src!.height,
-          ),
-          whitePaint,
-        );
-      } else {
-        canvas.drawImage(
-          component.sprite!.image,
-          Offset(translation.x, translation.y),
-          whitePaint,
-        );
-      }
-      canvas.restore();
+  void visitSpriteComponent(SpriteComponent component, void arg) {
+    if (component.sprite == null) {
+      super.visitSpriteComponent(component, arg);
+      return;
     }
+
+    final sprite = component.sprite!;
+
+    canvas.save();
+    _applyTransform(
+      component.globalTransform,
+      size: component.sprite!.size,
+      anchor: component.anchor,
+    );
+    if (component.sprite!.src != null) {
+      canvas.drawImageRect(
+        sprite.image,
+        sprite.src!,
+        Rect.fromLTWH(0, 0, sprite.src!.width, sprite.src!.height),
+        whitePaint,
+      );
+    } else {
+      canvas.drawImage(component.sprite!.image, Offset.zero, whitePaint);
+    }
+    canvas.restore();
 
     super.visitSpriteComponent(component, arg);
   }

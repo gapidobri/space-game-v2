@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:engine/src/game.dart';
 import 'package:flutter/material.dart';
 
@@ -14,12 +16,17 @@ class GamePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.drawRect(
-      Offset.zero & size,
-      Paint()..color = const Color(0xFF000000),
-    );
+    final scaleX = size.width / _game.camera.resolution.x;
+    final scaleY = size.height / _game.camera.resolution.y;
 
-    _game.render(canvas, size);
+    final scale = min(scaleX, scaleY);
+    canvas.scale(scale);
+
+    final newSize = Size(size.width / scale, size.height / scale);
+
+    canvas.translate(newSize.width / 2, newSize.height / 2);
+
+    _game.render(canvas, newSize);
   }
 
   @override

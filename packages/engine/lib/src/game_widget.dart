@@ -15,7 +15,7 @@ class GameWidget extends StatefulWidget {
 
 class _GameWidgetState extends State<GameWidget>
     with SingleTickerProviderStateMixin {
-  late final GamePainter renderer;
+  late final GamePainter painter;
   late final Ticker ticker;
 
   Duration last = Duration.zero;
@@ -24,9 +24,11 @@ class _GameWidgetState extends State<GameWidget>
   void initState() {
     super.initState();
 
+    WidgetsFlutterBinding.ensureInitialized();
+
     HardwareKeyboard.instance.addHandler(onKeyboardEvent);
 
-    renderer = GamePainter(widget.game);
+    painter = GamePainter(widget.game);
 
     ticker = createTicker(onTick);
     ticker.start();
@@ -59,11 +61,11 @@ class _GameWidgetState extends State<GameWidget>
 
     widget.game.update(dt);
 
-    renderer.repaint();
+    painter.repaint();
   }
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(size: Size.infinite, painter: renderer);
+    return CustomPaint(painter: painter);
   }
 }

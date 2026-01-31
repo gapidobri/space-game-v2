@@ -5,7 +5,13 @@ import 'package:engine/src/sprite.dart';
 class SpriteComponent extends TransformComponent {
   Sprite? sprite;
 
-  SpriteComponent({super.position, super.rotation, super.scale});
+  SpriteComponent({
+    this.sprite,
+    super.position,
+    super.angle,
+    super.scale,
+    super.anchor,
+  });
 
   @override
   void accept<T>(ComponentVisitor<T> visitor, T arg) =>
